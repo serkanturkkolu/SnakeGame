@@ -18,7 +18,7 @@ SnakeGame::SnakeGame():exitSignal(false),map(SnakeMap{40,20}),restart(false),exc
 }
 
 void SnakeGame::addDotEventHandler(void){
-    if(snakeSpeedDelta<300-SNAKE_SPEED_BASE_DELTA)
+    if(snakeSpeedDelta<SNAKE_SPEED_BASE_PERIOD-SNAKE_SPEED_BASE_DELTA)
     snakeSpeedDelta+=SNAKE_SPEED_BASE_DELTA;
 }
 
