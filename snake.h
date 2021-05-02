@@ -15,7 +15,6 @@ public:
         DirectionLeft='a',
         DirectionUp='w',
         DirectionDown='s',
-
     };
     Snake();
     bool addDot(Direction);

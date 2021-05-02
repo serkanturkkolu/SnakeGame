@@ -25,8 +25,10 @@ const char SnakeGame::SAY_GAME_OVER[]="\n\tDo you want to exit? (y)(n)\n\n\n"
 
 SnakeGame::SnakeGame():exitSignal(false),map(SnakeMap{40,20}),restart(false),exceptionFlag(false),snakeSpeedDelta(0)
 {
+#ifndef _WIN32
     system("stty -echo -icanon"); //stty echo icanon
     system("setterm -cursor off");
+#endif
     map.setSnake(&snake);
     snake.setMap(&map);
     snake.setAddDotEventHandler(std::bind(&SnakeGame::addDotEventHandler,this));
@@ -41,7 +43,7 @@ void SnakeGame::addDotEventHandler(void){
 bool SnakeGame::killDirectionThread(char input){
 //This function prevent to snake would speed up. If this function wouldn't be , whichever button the user pressed, the thread would be killed and the snake would speed up.
 
-    Snake::Direction oppositeDirection;
+    Snake::Direction oppositeDirection=Snake::DirectionLeft;
     switch (input) {
         case Snake::DirectionUp:
             oppositeDirection=Snake::DirectionDown;
@@ -54,6 +56,9 @@ bool SnakeGame::killDirectionThread(char input){
         break;
         case Snake::DirectionLeft:
             oppositeDirection=Snake::DirectionRight;
+        break;
+        default:
+            oppositeDirection=Snake::DirectionLeft;
         break;
 
     }
@@ -89,7 +94,6 @@ void SnakeGame::begin(){
 
     char input=(char)Snake::DirectionRight;
     while(!restart){
-        begin:
         switch (input){
             case Snake::DirectionUp: //Up
                 if(killDirectionThread(input))//This block provides kill direction thread immediately. So It is written especially every valid case of switch statement.
@@ -111,7 +115,6 @@ void SnakeGame::begin(){
                 killDirectionThread(input);//This block provides kill direction thread immediately. So It is written especially every valid case of switch statement.
                 map.clearTerminal();
                 std::cout << EXIT_QUESTION << std::endl;
-                quitStart:
 #ifdef _WIN32
                 input=(char)_getch();
 #else
@@ -125,13 +128,12 @@ void SnakeGame::begin(){
                         exit(0);
                     break;
                     case 'n':
-                        input = snake.getLastDirect();
-                        goto begin;
+                        std::thread(&SnakeGame::directionThread,this,snake.getLastDirect()).detach();
+                        continue;
                     break;
                     default:
-                        map.clearTerminal();
-                        std::cout << EXIT_QUESTION << std::endl;
-                        goto quitStart;
+                        input='q';
+                        continue;
                     break;
 
                 }
