@@ -2,6 +2,7 @@
 #include <random>
 #include "snake.h"
 
+
 SnakeMap::SnakeMap():/**/bait(0,0),width{10},height{10}
 {
 
@@ -60,7 +61,7 @@ void SnakeMap::generateBait(){
 
 
 void SnakeMap::show(){ //this function can change according to displaying method
-    std::system("clear");
+    clearTerminal();
     bool flag=false;
     for(int j=0;j<height;++j){
         for(int i=0;i<width;++i){
@@ -95,4 +96,12 @@ void SnakeMap::show(){ //this function can change according to displaying method
 
     std::cout << "|";//For frame right last line
     std::cout << std::flush;
+}
+
+void SnakeMap::clearTerminal() {
+#ifdef _WIN32
+    std::system("cls");
+#else
+    std::system("clear");
+#endif
 }

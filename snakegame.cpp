@@ -3,9 +3,25 @@
 #include <thread>
 #include "snake.h"
 #include "snakemap.h"
+#ifdef _WIN32
+#include <conio.h>
+#endif
 
 const int SnakeGame::SNAKE_SPEED_BASE_PERIOD=300;
 const int SnakeGame::SNAKE_SPEED_BASE_DELTA=5;
+const char SnakeGame::EXIT_QUESTION[]="\n\n\n\n\n\n\n\t\tDo you want to exit? (y)(n)\n\n\n\n\n\n";
+const char SnakeGame::SAY_GOOD_BYE[]="\n\n\n\n\n\n\t\tGood Bye.\n\n\n\n\n\n";
+const char SnakeGame::SAY_GAME_OVER[]="\n\tDo you want to exit? (y)(n)\n\n\n"
+                                      R"(
+                               /-------------\
+                               |  Game Over! |
+                               \-------------/
+                                    \
+                                       \     ^__^
+                                          \  (oo)\_______
+                                             (__)\       )\/\
+                                                 ||----w |
+                                                 ||     ||)";
 
 SnakeGame::SnakeGame():exitSignal(false),map(SnakeMap{40,20}),restart(false),exceptionFlag(false),snakeSpeedDelta(0)
 {
@@ -63,19 +79,8 @@ void SnakeGame::directionThread(Snake::Direction direct){
         }
     }catch (std::exception&) {
            exceptionFlag=true; //this flag is for game ended and should decide continue or exit?
-           std::system("clear");
-           std::cout <<  "\n\tDo you want to exit? (y)(n)\n\n\n"
-                        R"(
-                 /-------------\
-                 |  Game Over! |
-                 \-------------/
-                      \
-                         \     ^__^
-                            \  (oo)\_______
-                               (__)\       )\/\
-                                   ||----w |
-                                   ||     ||)"
-                       << std::endl;
+           map.clearTerminal();
+           std::cout <<  SAY_GAME_OVER << std::endl;
 
        }
 }
@@ -84,6 +89,7 @@ void SnakeGame::begin(){
 
     char input=(char)Snake::DirectionRight;
     while(!restart){
+        begin:
         switch (input){
             case Snake::DirectionUp: //Up
                 if(killDirectionThread(input))//This block provides kill direction thread immediately. So It is written especially every valid case of switch statement.
@@ -103,24 +109,33 @@ void SnakeGame::begin(){
             break;
             case 'q': //Quit the program
                 killDirectionThread(input);//This block provides kill direction thread immediately. So It is written especially every valid case of switch statement.
-                system("clear");
-                std::cout << "\n\n\n\n\n\n\n\t\tDo you want to exit? (y)(n)\n\n\n\n\n\n" << std::endl;
+                map.clearTerminal();
+                std::cout << EXIT_QUESTION << std::endl;
+                quitStart:
+#ifdef _WIN32
+                input=(char)_getch();
+#else
                 std::cin >> input;
+#endif
+
                 switch (input) {
                     case 'y':
-                        system("clear");
-                        std::cout << "\n\n\n\n\n\n\t\tGood Bye.\n\n\n\n\n\n" << std::endl;
+                        map.clearTerminal();
+                        std::cout << SAY_GOOD_BYE << std::endl;
                         exit(0);
                     break;
                     case 'n':
                         input = snake.getLastDirect();
-                        continue;
+                        goto begin;
                     break;
                     default:
-                        std::cout << "\n\n\n\n\n\n\n\t\tDo you want to exit? (y)(n)\n\n\n\n\n\n" << std::endl;
+                        map.clearTerminal();
+                        std::cout << EXIT_QUESTION << std::endl;
+                        goto quitStart;
                     break;
 
                 }
+
             break;
         default:
             //nothing
@@ -128,11 +143,15 @@ void SnakeGame::begin(){
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
         query:
+#ifdef _WIN32
+        input=(char)_getch();
+#else
         std::cin >> input;
+#endif
         if(exceptionFlag){ // this block is for answering the question what is continue or exit? // this block use last stdin character
             switch (input) {
                 case 'y':
-                system("clear");
+                map.clearTerminal();
                 std::cout << "\n\n\n\n\n\n\t\tGood Bye.\n\n\n\n\n\n" << std::endl;
                 exit(0);
                 break;
@@ -141,7 +160,7 @@ void SnakeGame::begin(){
                 exceptionFlag=false;
                 break;
                 default:
-                std::system("clear");
+                map.clearTerminal();
                 std::cout << "\n\n\n\n\n\n\n\t\tDo you want to exit? (y)(n)\n\n\n\n\n\n" << std::endl;
                 goto query;
                 break;

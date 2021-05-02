@@ -67,15 +67,13 @@ bool Snake::directTo(Snake::Direction direction){
     case DirectionUp:
         if(lastDirect==DirectionDown)
             return false;
-        else {
-            dots.pop_back();
-        }
         if(dots.front().posX==map->getBait().posX && dots.front().posY-1==map->getBait().posY){
             dots.emplace_front(map->getBait().posX, map->getBait().posY);
             map->generateBait();
         }
         dots.push_front(dots.front());
         dots.front().posY--;
+        dots.pop_back();
         if(dots.front().posY<0)
             throw std::exception();
 
@@ -84,15 +82,13 @@ bool Snake::directTo(Snake::Direction direction){
     case DirectionDown:
         if(lastDirect==DirectionUp)
             return false;
-        else {
-            dots.pop_back();
-        }
         if(dots.front().posX==map->getBait().posX && dots.front().posY+1==map->getBait().posY){
             dots.emplace_front(map->getBait().posX, map->getBait().posY);
             map->generateBait();
         }
         dots.push_front(dots.front());
         dots.front().posY++;
+        dots.pop_back();
         if(dots.front().posY>map->getHeight()-1)
             throw std::exception();
 
@@ -101,15 +97,13 @@ bool Snake::directTo(Snake::Direction direction){
     case DirectionLeft:
         if(lastDirect==DirectionRight)
             return false;
-        else {
-            dots.pop_back();
-        }
         if(dots.front().posX-1==map->getBait().posX && dots.front().posY==map->getBait().posY){
             dots.emplace_front(map->getBait().posX, map->getBait().posY);
             map->generateBait();
         }
         dots.push_front(dots.front());
         dots.front().posX--;
+        dots.pop_back();
         if(dots.front().posX<0)
             throw std::exception();
 
@@ -118,15 +112,13 @@ bool Snake::directTo(Snake::Direction direction){
     case DirectionRight:
         if(lastDirect==DirectionLeft)
             return false;
-        else {
-            dots.pop_back();
-        }
         if(dots.front().posX+1==map->getBait().posX && dots.front().posY==map->getBait().posY){
             dots.emplace_front(map->getBait().posX, map->getBait().posY);
             map->generateBait();
         }
         dots.push_front(dots.front());
         dots.front().posX++;
+        dots.pop_back();
         if(dots.front().posX>map->getWidth()-1)
             throw std::exception();
 

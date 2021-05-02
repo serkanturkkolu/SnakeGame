@@ -27,6 +27,7 @@ public:
     Bait getBait()const;
     void generateBait();
     void show();
+    void clearTerminal();
 private:
     Snake *snake;
     Bait bait;
