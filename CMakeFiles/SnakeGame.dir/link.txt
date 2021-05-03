@@ -1,1 +1,0 @@
-/usr/bin/g++  -g   CMakeFiles/SnakeGame.dir/main.cpp.o CMakeFiles/SnakeGame.dir/snake.cpp.o CMakeFiles/SnakeGame.dir/snakemap.cpp.o CMakeFiles/SnakeGame.dir/dot.cpp.o CMakeFiles/SnakeGame.dir/snakegame.cpp.o  -o SnakeGame  -lpthread 
