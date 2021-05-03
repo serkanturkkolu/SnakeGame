@@ -1,3 +1,0 @@
-/home/serkan/SnakeGame/build/CMakeFiles/rebuild_cache.dir
-/home/serkan/SnakeGame/build/CMakeFiles/edit_cache.dir
-/home/serkan/SnakeGame/build/CMakeFiles/SnakeGame.dir

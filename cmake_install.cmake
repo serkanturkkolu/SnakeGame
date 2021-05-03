@@ -1,4 +1,4 @@
-# Install script for directory: /home/serkan/SnakeGame
+# Install script for directory: /home/serkan/myGitRepos/SnakeGame
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/serkan/SnakeGame/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/serkan/myGitRepos/SnakeGame/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

@@ -1,0 +1,3 @@
+/home/serkan/myGitRepos/SnakeGame/CMakeFiles/rebuild_cache.dir
+/home/serkan/myGitRepos/SnakeGame/CMakeFiles/edit_cache.dir
+/home/serkan/myGitRepos/SnakeGame/CMakeFiles/SnakeGame.dir
