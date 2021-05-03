@@ -33,7 +33,8 @@
 
 *.user*
 *.cbp
-CMakeFiles/SnakeGame.dir
 .cmake/
-CMakeFiles/CMakeTmp
+CMakeFiles
+CMakeCache.txt
+cmake_install.cmake
 
